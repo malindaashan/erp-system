@@ -1,0 +1,208 @@
+<div id="homediv">
+    <nav class="navbar navbar-inverse" id="navigation_bar">
+        <div id="main-nav" class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Rate Me</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a id="home" href="#">Home</a></li>
+
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Employee Management <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" id="create_employee_profile">Create Employee Profile</a></li>
+                        <li><a href="#" id="assign_rateme_profile">Assign RateMe Profile</a></li>
+                         <li><a href="#" id="employee_list">Employee List</a></li>
+                    </ul>
+                </li>
+                
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Product Management <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+						<li><a id="create_product" href="#">Create Product</a></li>
+                        <li><a id="product_type_line_config" href="#">Product Step Configuration</a></li><!-- product_type_line_config -->
+                        <li><a id="lines_product_management" href="#">Lines Product Management</a></li>
+                         <li><a id="search_product_details" href="#">Search Product Details</a></li>
+                    </ul>
+                </li>
+                
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Device Management <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a id="register_new_device" href="#">Register New Device</a></li>
+                        <!-- <li><a id="assign_device_employee" href="#">Assign Device - Employee </a></li> -->
+                    </ul>
+                </li>
+
+                <li><a id="about" href="#">About</a></li>
+                <li><a id="contact_us" href="#">Contact Us</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-top: 10px;padding-bottom: 0px">
+                    
+                        <img src="images/avatar.jpg" data-toggle="user_profilename" title="" aria-haspopup="true" aria-expanded="false" id="profile_icon" class="img-circle" width="35" height="35" alt="profile" onclick="loadProfile()">
+                        <strong class="user_profile_username"></strong>
+                        <span class="glyphicon glyphicon-chevron-down"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <div class="navbar-login" style="width: 305px;padding: 10px;padding-bottom: 0px;">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <p class="text-center">
+                                            <img src="images/avatar.jpg" id="profile_icon_box" width="100" height="100">
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <p class="text-left"><strong class="user_profile_fullname"></strong></p>
+                                        <p class="text-left small" id="user_profile_email"></p>
+                                        <p class="text-left">
+                                            <a id="view_profile" class="btn btn-primary btn-block btn-sm">View Profile</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="navbar-login navbar-login-session" style="padding: 10px; padding-bottom: 0px; padding-top: 0px;">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <p>
+                                            <a href="logOut" class="btn btn-danger btn-block">log out</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div id="profile_div"></div>
+        </div>
+    </nav>
+<!--      <div id="content"></div> -->
+<!--     <input type="hidden" id="user" value="" />
+    <input type="hidden" id="loginid" value="" />
+    <input type="hidden" id="portalId" value="" /> -->
+
+    <script type="text/javascript">
+    //loading page from load page    
+     function loadPage(page, e) {
+            $.ajax({
+                url: 'user/checkHomePage',
+                dataType: 'text',
+                type: 'GET',
+                success: function(data) {
+                    if (data == 'login') {
+                       $("#main").load("pages/" + data + ".html");
+                        window.location.hash = "login";
+                    } else {
+                        $('#main-nav li').removeClass('active');
+                        $("#" + page).parent('li').addClass('active');
+                        //$("#content").load("pages/" + page + ".html");
+                       // $("#main").load("pages/home.html");
+                        $("#content").html(''); 
+                        $("#content").load("pages/" + page + ".html");
+                        window.location.hash = page;
+                        e.preventDefault();
+                    }
+                }
+            });
+        }
+        //loading pages to main div
+        $(document).ready(function() {
+/*             $("#home").on("click", function(e) {
+                loadPage('home', e);
+            }); */
+            $("#home").on("click", function(e) {
+                loadPage('main_page', e);
+            });
+            $("#create_employee_profile").on("click", function(e) {
+                loadPage('create_employee_profile', e);
+            });
+            $("#assign_rateme_profile").on("click", function(e) {
+                loadPage('assign_rateme_profile', e);
+            });
+            $("#employee_list").on("click", function(e) {
+                loadPage('employee_list', e);
+            });
+            $("#product_type_line_config").on("click", function(e) {
+                $(this).addClass('active');
+                loadPage('product_type_line_config', e);
+            });
+            $("#create_product").on("click", function(e) {
+                $(this).addClass('active');
+                loadPage('create_product', e);
+            });
+            $("#lines_product_management").on("click", function(e) {
+                $(this).addClass('active');
+                loadPage('lines_product_management', e);
+            });
+            $("#search_product_details").on("click", function(e) {
+                $(this).addClass('active');
+                loadPage('search_product_details', e);
+            });
+            
+            $("#register_new_device").on("click", function(e) {
+                $(this).addClass('active');
+                loadPage('register_new_device', e);
+            });
+      /*       $("#assign_device_employee").on("click", function(e) {
+                $(this).addClass('active');
+                loadPage('assign_device_employee', e);
+            }); */
+
+            $("#about").on("click", function(e) {
+                loadPage('about', e);
+            });
+            $("#contact_us").on("click", function(e) {
+                loadPage('contact_us', e);
+            });
+            $("#view_profile").on("click", function(e) {
+                loadPage('view_profile', e);
+            }); 
+            
+            function setImage(data) {
+                $("#profile_pic").attr("src", "images/test.jpg");
+            }
+            setUsername();
+        });
+        
+        function setUsername() {
+            $.ajax({
+                url: 'user/getUserByUsername',
+                dataType: 'json',
+                data: {
+                	username: $("#login_username").val()
+                },
+                type: 'GET',
+                success: function(data) {
+                	$("#login_userId").val(data[0].id);
+                	$("#employee_detail_id").val(data[0].employeeDetailId);
+                	getEmployeeById(data[0].employeeDetailId);
+                }
+            });
+        }
+
+        function getEmployeeById(employeeId) {
+            $.ajax({
+                url: 'employee/getEmployeeById',
+                data: {
+                 id: employeeId
+                },
+                dataType: 'json',
+                type: 'GET',
+                success: function(data) {
+                    setProfileDetails(data);
+                }
+            });
+        }
+        function setProfileDetails(employee) {
+        	$(".user_profile_fullname").text(employee.fullname);
+        	$(".user_profile_username").text($("#login_username").val());
+            $("#user_profile_email").text(employee.jobTitle);
+            $("#profile_icon").attr("src", "data:image/png;base64," + employee.profilePic);
+            $("#profile_icon_box").attr("src", "data:image/png;base64," + employee.profilePic); 
+        }
+    </script>
+</div>

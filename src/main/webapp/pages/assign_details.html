@@ -1,0 +1,134 @@
+<style type="text/css">
+
+    label {
+
+        margin-bottom: 10px;
+    }
+    
+    .btn-success {
+    	margin-left: 15px;
+	}
+	
+</style>
+<div id="assign_details">
+    <h3 class="topic">Assign Details</h3>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Step Name: </label>
+                <input class="form-control" name="step_name" id="step_name" disabled>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Step: </label>
+                <input class="form-control" name="step" id="step" disabled>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Employee Name: </label>
+                <select id="employee_name" name="employee_name" class="form-control">
+                	<option selected>-- Please Select an Employee --</option>
+                </select>
+                <!-- <input class="form-control" placeholder="Employee Name" name="employee_name" id="employee_name"> -->
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Device Code: </label>
+                <select id="device_code" name="device_code" class="form-control">
+                	<option selected>-- Please Select a Device Code --</option>
+                </select>
+                <!-- <input class="form-control" placeholder="Device Code" name="device_code" id="device_code"> -->
+            </div>
+        </div> 
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Sewing Steps:</label>
+                <input class="form-control" placeholder="Sewing Steps" name="sewing_steps" id="sewing_steps">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Time Taken:</label>
+                <input class="form-control" placeholder="Time Taken" name="time_taken" id="time_taken">
+            </div>
+        </div>
+        <button id="submit_assignDetails" onclick="addToGrid()" class="btn btn-success">Add</button>
+        <input type="hidden" id="employeeDetailId" name="employeeDetailId" value="0"/>
+        <input type="hidden" id="employeeDetailId" name="deviceDetailId" value="0"/>
+        
+        <input type="hidden" id="requestedEmployeeName" name="requestedEmployeeName" value=""/>
+        <input type="hidden" id="requestedDeviceCode" name="requestedDeviceCode" value=""/>
+    </div>
+<script>
+var empNames = [];
+var allDeviceNames = [];
+$(document).ready(function() {
+
+    $.ajax({
+        url: 'employee/getAllFullNames',
+        dataType: 'json',
+        type: 'GET',
+        success: function(data) {
+            setEmployeeFullNames(data);
+        }
+    });
+
+    $.ajax({
+        url: 'device/getAllDeviceNames',
+        dataType: 'json',
+        type: 'GET',
+        success: function(data) {
+            setDeviceCodes(data);
+        }
+    });
+
+});
+
+function setEmployeeFullNames(EmployeeNames) {
+    for (var i = 0; i < EmployeeNames.length; i++) {
+        var emp = {};
+        emp.value = EmployeeNames[i].id;
+        emp.label = EmployeeNames[i].fullname;
+        empNames.push(emp);
+    }
+    loadEmployeeData(empNames);
+}
+
+function setDeviceCodes(DeviceNames) {
+    for (var i = 0; i < DeviceNames.length; i++) {
+        var device = {};
+        device.value = DeviceNames[i].id;
+        device.label = DeviceNames[i].deviceCode;
+        allDeviceNames.push(device);
+    }
+    loadDeviceCodeData(allDeviceNames);
+}
+
+function loadEmployeeData(emp) {
+    for (var i = 0; i < emp.length; i++) {
+        var val = emp[i].label;
+        var key = emp[i].value;
+        $('#employee_name').append($('<option>', {
+            value: key,
+            text: val,
+        }));
+    }
+   }
+
+    function loadDeviceCodeData(device) {
+        for (var i = 0; i < device.length; i++) {
+            var val = device[i].label;
+            var key = device[i].value;
+            $('#device_code').append($('<option>', {
+                value: key,
+                text: val
+            }));
+        }
+     }
+</script>

@@ -1,0 +1,203 @@
+<style type="text/css">
+
+    label {
+
+        margin-bottom: 10px;
+    }
+    
+    .btn-success {
+    	margin-left: 15px;
+	}
+</style>
+
+<h3 class="topic">Product Step Configuration</h3>
+<div class="detailWrapper">
+    <!--     <form class="form-horizontal" id="product_type_lineform" role="form"> -->
+    <div class="clearfix"></div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Product Type: </label>
+            <input class="form-control" placeholder="Product Type" name="product_type" id="product_type">
+        </div>
+    </div>
+    
+    <div class="clearfix"></div>
+    <hr>
+    
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Select Name: </label>
+            <select id="product_name" name="product_name" class="form-control">
+                <option selected>-- Please Select a Product Name --</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="clearfix"></div>
+    
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Step Name: </label>
+            <input class="form-control" placeholder="Step Name" name="step_name" id="step_name">
+        </div>
+    </div>
+    
+     <div class="clearfix"></div>
+     
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Daily Target: </label>
+            <input class="form-control" placeholder="Daily Target" name="dailyTarget" id="dailyTarget">
+        </div>
+    </div>
+    
+    <div class="clearfix"></div>
+    
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>Step Number: </label>
+            <input class="form-control" placeholder="Step" name="step" id="step">
+        </div>
+    </div>
+    
+    <div class="clearfix"></div>
+     <br>
+    
+    <button id="add_step" onclick="addStep()" class="btn btn-success">Add Step</button>
+    
+    <div class="clearfix"></div>
+    <div class="clearfix"></div>
+    <br>
+    <br>
+    
+    <table id="product_line_datatable" class="display" width="100%"></table>
+    <div class="clearfix"></div>
+    <div class="clearfix"></div>
+    <div class="clearfix"></div>
+    <br>
+    <br>
+    
+    <button id="submit_type_line_info" onclick="saveTypeLinenfo()" class="btn btn-success">Submit</button>
+    <input type="hidden" id="dataSet" name="dataSet" value="">
+    <input type="hidden" id="product_type_id" name="product_type_id" value="0">
+</div>
+<!--     </form> -->
+<script>
+    var prodArr = [];
+    var prodNamesArr = [];
+    var dataSet = [];
+    var array = [];
+
+    function saveTypeLinenfo() {
+        var dataset = $("#dataSet").val(); //retrieve array
+        $.ajax({
+            url: "product/save/producttypeline",
+            type: "POST",
+            data: {
+                product_type: $("#product_type").val(),
+                step_name: $("#step_name").val(),
+                step: $("#step").val(),
+                dailyTarget: $("#dailyTarget").val(),
+                dataSet: dataset
+            },
+            success: function() {
+
+                alert("Sucessfully Saved");
+                var table = $('#product_line_datatable').DataTable();
+                table.clear().draw();
+                $("#product_type").val('');
+                $("#product_name").html("");
+                $("#product_name").append("<option>-- Please Select a Product Name --</option>");
+            }
+        });
+    }
+
+    function addStep() {
+        tempData = [$("#product_type").val(), $("#product_name").val(), $("#step_name").val(), $("#step").val(),$("#dailyTarget").val()];
+        dataSet.push(tempData);
+        var datatable = $("#product_line_datatable").DataTable();
+        datatable.clear().rows.add(dataSet).draw();
+        array.push({
+            product_type: $("#product_type").val(),
+            product_name: $("#product_name").val(),
+            step_name: $("#step_name").val(),
+            step: $("#step").val(),
+            dailyTarget: $("#dailyTarget").val()
+        });
+        $("#dataSet").val(JSON.stringify(array));
+        
+        $("#step_name").val('');
+        $("#step").val('');
+        $("#dailyTarget").val('');
+        
+    }
+    $(document).ready(function() {
+
+        $('#product_line_datatable').DataTable({
+            data: dataSet,
+            columns: [{
+                    title: "Product Type"
+                },
+                {
+                    title: "Product Name"
+                },
+                {
+                    title: "Step Name"
+                },
+                {
+                    title: "Step Number"
+                },
+                {
+                    title: "Daily Target"
+                }
+            ]
+        });
+
+        $.ajax({
+            url: 'product/list/producttype',
+            dataType: 'json',
+            type: 'GET',
+            success: function(data) {
+                setProductTypes(data);
+            }
+        });
+    });
+
+    function setProductTypes(prodTypes) {
+        for (i = 0; i < prodTypes.length; i++) {
+            var prod = {};
+            prod.value = prodTypes[i].id;
+            prod.label = prodTypes[i].productType;
+            prodArr.push(prod);
+        }
+    }
+
+    $("#product_type").autocomplete({
+        source: prodArr,
+        select: function(event, ui) {
+            $("#product_type").val(ui.item.label); // display the selected text
+            $("#product_type_id").val(ui.item.value); // save selected id to hidden input
+            event.preventDefault();
+            $.ajax({
+                url: 'product/list/product_type/productName',
+                dataType: 'json',
+                data: {
+                    product_type: $('#product_type').val()
+                },
+                type: 'GET',
+                success: function(data) {
+                    setProductNames(data);
+                }
+            });
+        }
+    });
+
+    function setProductNames(list) {
+        for (var i = 0; i < list.length; i++) {
+            $('#product_name').append($('<option>', {
+                value: list[i].productName,
+                text: list[i].productName
+            }));
+        }
+    }
+</script>

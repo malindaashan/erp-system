@@ -1,0 +1,45 @@
+<h2 class="topic">Current Employee-RFID Details List</h2>
+<div class="detailWrapper">
+       <div class="clearfix"></div>
+      <table id="datatable" class="display" width="100%"></table>
+</div>
+<script>
+   var dataSet = [];
+   $(document).ready(function() {
+       $('#datatable').DataTable({
+           data: dataSet,
+           columns: [{
+        	   	   title: "#"
+           	   },
+               {
+                   title: "Employee Name"
+               },
+               {
+                   title: "Employee RFID"
+               }
+           ]
+       });
+       
+       $.ajax({
+           url: 'employee//getAllFullNames',
+           dataType: 'json',
+           type: 'GET',
+           success: function(data) {
+               loadAllEmployeesWithRFID(data);
+           }
+       });
+  
+   });
+   
+   function loadAllEmployeesWithRFID(data){
+		for(var x=0; x<data.length; x++){
+        	var tempData = [x+1,data[x].fullname,data[x].rfid];
+        	dataSet.push(tempData);
+	}
+    var datatable = $("#datatable").DataTable();
+    datatable.clear().rows.add(dataSet).draw();
+   }
+
+   
+   
+</script>

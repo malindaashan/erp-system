@@ -1,0 +1,107 @@
+<html>
+
+<head>
+    <title>MAS ERP System</title>
+    <!-- JS IMPORTS -->
+   	 
+   	<!-- Import JQUERY 3.3.1 -->
+    	<script src="vendor/jquery/js/jquery.min.js"></script>
+    
+    <!-- Import JQUERY UI 1.12.1 -->
+    	<script src="vendor/jquery/js/jquery-ui.min.js"></script>
+    
+    <!-- Import BOOTSTRAP JS 3.3.7 -->
+ 		<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+ 	
+ 	<!-- Import FONT AWESOME FOR GLYPHICONS -->
+ 		<link rel="stylesheet" href="vendor/fontawsome/font-awsome.min.css">
+ 		<link href="vendor/glyphicons/bootstrap-glyphicons.css" rel="stylesheet">
+ 		
+	<!-- Import JQUERY Datatable JS -->
+    	 <script src="vendor/datatable/js/datatables.js"></script>
+ 		
+ 	<!------------JS and CSS Separation------------------------------------------------>
+ 	
+    <!-- Custom styles for this template -->
+    	<link href="css/custom.css" rel="stylesheet" type="text/css"/> 
+	
+	<!-- Import BOOTSTRAP CSS 3.3.7 -->
+ 		<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/> 
+ 		
+    <!-- Import JQUERY Datatable CSS -->
+    	<link href="vendor/datatable/css/datatables.css" rel="stylesheet" type="text/css"/> 
+    
+    <!-- Import JQUERY UI 1.12.1 -->
+    	 <link href="vendor/jquery/css/jquery-ui.min.css" rel="stylesheet" type="text/css"/> 
+    	 
+    <!-- Import Chart JS 2.7.2 -->
+ 		<script src="vendor/charts/Chart.min.js"></script>
+ 		
+ 	<!-- Import icons css -->
+ 		<link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet" type="text/css">
+ 		
+
+</head>
+
+<body>
+       <input type="hidden" id="login_username" name="login_username" value=""/>
+       <input type="hidden" id="login_userId" name="login_userId"/ value="0">
+       <input type="hidden" id="employee_detail_id" name="employee_detail_id"/ value="0">
+    
+<div id ="main">
+</div>
+<div id ="content">
+</div>
+<script type="text/javascript">
+
+
+$(document).ready(function() {
+	if (window.location.hash == "") {
+		$.ajax({
+             url: 'user/checkHomePage',
+             dataType: 'text',
+             type: 'GET',
+             success: function(data) {
+                 window.location.hash = data;
+                 if (data == 'login') {
+                     $("#main").load("pages/" + data + ".html");
+                     window.location.hash = "login";
+                 } else {
+                	 var login_username = $("#login_username").val();
+                	 $("#main").load("pages/home.html"); 
+                     $("#content").html('');
+                     $("#content").load("pages/main_page.html");
+                  
+                 }
+             }
+         });
+     } else {
+         $.ajax({
+             url: 'user/checkHomePage',
+             dataType: 'text',
+             type: 'GET',
+             success: function(data) {
+                 if (data == 'login') {
+                     $("#main").load("pages/" + data + ".html");
+                     window.location.hash = "login";
+                 } else {
+                	 var username=   $("#login_username").val();
+                	 var hash = window.location.hash;
+                     var reload_page = hash.replace('#', '');
+                     $('#main-nav li').removeClass('active');
+                     $("#" + reload_page).parent('li').addClass('active');
+                    	$("#main").load("pages/home.html");
+                    	$("#content").html('');
+                    	$("#content").load("pages/" + reload_page + ".html"); 
+                    	 /* $("#login_username").val() = username; */
+                 }
+             }
+         });
+     }
+});
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<div style="background-color: #fff;padding: 20px;">
+   <h3 class="topic">Your Personal info</h3>
+   <div class=detailWrapper>
+      <div>
+         <div class="panel-body">
+            <div class="row" style="background-color: #fff;padding-bottom: 20px;">
+               <div class="col-md-3 col-md-offset-5">
+                  <div class="heading">
+                  </div>
+               </div>
+               <div class=" col-md-9 col-lg-9 ">
+                  <br>
+                  <br>
+                  <table class="table table-user-information">
+                     <tbody>
+                        <tr>
+                           <td align="right"><b>User Name</b></td>
+                           <td id="profile_username"></td>
+                        </tr>
+                        <tr>
+                        <tr>
+                           <td align="right"><b>Employee Id</b></td>
+                           <td id="profile_employeeId"></td>
+                        </tr>
+                        <tr>
+                           <td align="right"><b>Full Name</b></td>
+                           <td id="profile_fullname"></td>
+                        </tr>
+                        <tr>
+                           <td align="right"><b>First Name</b></td>
+                           <td id="profile_firstname"></td>
+                        </tr>
+                        <tr>
+                           <td align="right"><b>Last Name</b></td>
+                           <td id="profile_lastname"></td>
+                        </tr>
+                        <tr>
+                        <tr>
+                           <td align="right"><b>Phone Number</b></td>
+                           <td id="profile_phoneNumber"></td>
+                        </tr>
+                        <tr>
+                           <td align="right"><b>Date of Birth</b></td>
+                           <td id="profile_dob"></td>
+                        </tr>
+                        <tr>
+                           <td align="right"><b>Gender</b></td>
+                           <td id="profile_gender"></td>
+                        </tr>
+                        <tr>
+                        <tr>
+                           <td align="right"><b>Department</b></td>
+                           <td id="profile_dep">
+                              <a href="#"></a>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td align="right"><b>Job title</b></td>
+                           <td id="profile_jobtitle"></td>
+                        </tr>
+                        <tr>
+                           <td align="right"><b>Role</b></td>
+                           <td id="profile_role"></td>
+                        </tr>
+                        <tr>
+                           <td align="right"><a href="#" data-toggle="modal" data-target="#editUserAccount" class="btn btn-primary" id="edit">Edit Profile</a></td>
+                           <!-- <td><a href="#" data-toggle="modal" data-target="#changePassword" class="btn btn-primary" id="change_password">Change Password</a></td> -->
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+               <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" id="view_profile_icon" src="images/avatar.jpg" width="250" height="250" class="img-circle"> </div>
+            </div>
+         </div>
+      </div>
+      <div class="modal fade" style="" id="editUserAccount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog" style="left:0%">
+            <div class="modal-content" style="position: absolute;margin-left: -320px;">
+               <div class="modal-header" style="padding:10px">
+                  <button type="button" style="position: relative;left: 115px;" class="close" data-dismiss="modal" aria-label="Close">
+                  <span style="position: relative;left: -110px;" aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body" style="padding:1px">
+                  <div id="model-employee"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="modal fade" style="" id="changePassword" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog" style="left:0%">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <button type="button" style="position: relative;left: 115px;" class="close" data-dismiss="modal" aria-label="Close">
+                  <span style="position: relative;left: -110px;" aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <div id="model-password"></div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script type="text/javascript"> 
+
+$(document).ready(function() {
+
+    getEmployeeDetails();
+
+    $(document).on("click", "#edit", function() {
+    	$("#model-employee").load("pages/edit_profile.html");
+        var emplyeeID = $("#employee_detail_id").val();
+        $.ajax({
+            url: 'employee/getEmployeeById',
+            data: {
+                id: emplyeeID
+            },
+            dataType: 'json',
+            type: 'GET',
+            success: function(data) {
+                setModelProfileDetails(data)
+            }
+        });
+    });
+    
+	$(document).on("click", "#change_password", function() {
+		$("#model-password").load("html/change_password.html");
+	});
+
+});
+
+function loadTitles(titles){
+ 	for(i=0;i<titles.length;i++){
+ 		$('.modal-body #edit_job_title').append("<option value ='"+titles[i].jobtitle+"'>"+titles[i].jobtitle+"</option>");
+ 	}
+}
+
+function loadRoles(roles){ 
+ 	for(i=0;i<roles.length;i++){
+ 		$('.modal-body #edit_role').append("<option value='"+roles[i].role+"'>"+roles[i].role+"</option>");
+ 	}	 
+}
+
+function loadDepartments(deps){ 
+ 	for(i=0;i<deps.length;i++){
+ 		$('.modal-body #edit_department').append("<option value='"+deps[i].department+"'>"+deps[i].department+"</option>");
+ 	}	 
+}
+
+function setModelProfileDetails(employee) {
+	
+    $.ajax({
+        url: 'employee/allroles',
+        dataType: 'json',
+        type: 'GET',
+        success: function(data) {
+            loadRoles(data);
+            $(".modal-body #edit_role").val(employee.role);    
+        }
+    });
+
+    $.ajax({
+        url: 'employee/alljobtitles',
+        dataType: 'json',
+        type: 'GET',
+        success: function(data) {
+            loadTitles(data);
+            $(".modal-body #edit_job_title").val(employee.jobTitle);
+        }
+    });
+    $.ajax({
+        url: 'employee/alldepartments',
+        dataType: 'json',
+        type: 'GET',
+        success: function(data) {
+            loadDepartments(data);
+            $(".modal-body #edit_department").val(employee.department);
+        }
+    });
+    
+    console.log(employee);
+    $(".modal-body #edit_username").val($("#login_username").val());
+    $(".modal-body #edited_emp_id").val($("#employee_detail_id").val());
+    $(".modal-body #edit_employeeId").val(employee.employeeId);
+    $(".modal-body #edit_firstname").val(employee.firstname);
+    $(".modal-body #edit_lastname").val(employee.lastname);
+    $(".modal-body #edit_birthDate").val(employee.birthday);
+    $(".modal-body #edit_phone_number").val(employee.phoneNumber); 
+    $(".modal-body #edit_gender").val(employee.gender);
+    $(".modal-body #edit_profile_pic").attr("src","data:image/png;base64," + employee.profilePic );
+}
+
+function getEmployeeDetails() {
+    var employeeID = $("#employee_detail_id").val();
+    $.ajax({
+        url: 'employee/getEmployeeById',
+        data: {
+        	id: employeeID
+        },
+        dataType: 'json',
+        type: 'GET',
+        success: function(data) {
+            setProfileDetails(data)
+        }
+    });
+}
+
+function setProfileDetails(employee) {
+    $("#profile_username").html($("#login_username").val());
+    $("#profile_employeeId").html(employee.employeeId);
+    $("#profile_fullname").html(employee.fullname);
+    $("#profile_firstname").html(employee.firstname);
+    $("#profile_lastname").html(employee.lastname);
+    $("#profile_phoneNumber").html(employee.phoneNumber);
+    $("#profile_gender").html(employee.gender);
+    $("#profile_dep").html(employee.department);
+    $("#profile_jobtitle").html(employee.jobTitle);
+    $("#profile_role").html(employee.role);
+    $("#profile_dob").html(employee.birthday);
+    $("#view_profile_icon").attr("src","data:image/png;base64," + employee.profilePic );
+}
+
+$("#editUserAccount").on("hidden.bs.modal", function () {
+    var loginID = $("#loginid").val();
+    $.ajax({
+        url: 'employee/list/loginId',
+        data: {
+            login_id: loginID
+        },
+        dataType: 'json',
+        type: 'GET',
+        success: function(data) {
+            setProfileDetails(data)
+        }
+    });
+});
+	
+
+
+ 	
+</script>
