@@ -29,6 +29,8 @@ public class UserLogin implements Serializable {
 	
 	String password;
 	
+	String privilege_id;
+	
 	String status;
 	
 	
@@ -62,7 +64,14 @@ public class UserLogin implements Serializable {
 	public void setEmployeeDetailId(Long employeeDetailId) {
 		this.employeeDetailId = employeeDetailId;
 	}
+	public String getPrivilege_id() {
+		return privilege_id;
+	}
+	public void setPrivilege_id(String privilege_id) {
+		this.privilege_id = privilege_id;
+	}
 
+	
 
 	
 	

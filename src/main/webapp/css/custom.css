@@ -4,12 +4,12 @@
     }
 
     .topic {
-        background-color: #5cb85c;
+        background-color: #337ab7;
         color: white;
         padding: 8px;
         text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
         border-radius: 5px 5px 0 0;
-        border: 1px solid #42f48c;
+        border: 1px solid #337ab7;
         margin-bottom: 0px;
         margin-left: 20px;
         margin-right: 20px;
@@ -18,11 +18,15 @@
 	
 	.detailWrapper{
 		padding: 15px;
-    	border-color: #5cb85c;
+    	border-color: #337ab7;
     	border-style: solid;
     	border-top: none;
     	margin-left: 20px;
     	margin-right: 20px;
     	padding:40px;
 	
+	}
+	.navigation_bar{
+	    background-color: #337ab7;
+    	border-color: #2e6da4;
 	}

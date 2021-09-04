@@ -5,19 +5,19 @@
 	right: 113px;
 }
 	.topic{
-		background-color: #5cb85c;
+		background-color: #337ab7;
 		color: white;
 		padding: 8px;
 		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
 		border-radius: 5px 5px 0 0;
-		border: 1px solid #42f48c;
+		border: 1px solid #337ab7;
 		margin-bottom: 0px;
 	
 		}
 		
 </style>
 <div style="background-color: #fff;padding: 20px;">
-<h3 class="topic">Create Employee Profile</h3>
+<h3 class="topic">Upload Salary Sheet</h3>
   <div class="detailWrapper" style="padding:15px">
     <div id="regform" class="form-signin" style="max-width: 1200px;">
         <div class="container">
@@ -31,113 +31,33 @@
                             <br>
                             <br>
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">First Name:</label>
+                                <label class="col-lg-3 control-label">File Name:</label>
                                 <div class="col-lg-8">
-                                    <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Firstname" required="" autofocus="" />
-                                    <label style="display:block;color:red;" id="lbl_firstname"> &nbsp; </label>
+                                    <input type="text" class="form-control" id="filename" name="filename" placeholder="filename" required="" autofocus="" />
+                                    <label style="display:block;color:red;" id="lbl_filename"> &nbsp; </label>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">Last Name:</label>
+                                <label class="col-lg-3 control-label">File Description:</label>
                                 <div class="col-lg-8">
-                                    <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Lastname" required="" autofocus="" />
-                                    <label style="display:block;color:red;" id="lbl_lastname">&nbsp;</label>
+                                    <input type="text" class="form-control" id="description" name="description" placeholder="description" required="" autofocus="" />
+                                    <label style="display:block;color:red;" id="lbl_description">&nbsp;</label>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-lg-3 control-label">Employee ID:</label>
-                                <div class="col-lg-8">
-                                    <input type="text" class="form-control" id="employeeId" name="employeeId" onchange="checkEmployeeId(this)" placeholder="Employee ID" required="" autofocus="" />
-                                    <label style="display:block;color:red;" id="lbl_employeeId">&nbsp;</label>
-                                </div>
+                             <label class="col-md-3 control-label"></label>
+                              <div class="col-md-8">
+                                 <input type='file' class="form-control" name="file" id="upload" style="height: auto;" />
+                              </div>
                             </div>
-                            
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">Employee RFID:</label>
-                                <div class="col-lg-8">
-                                    <input type="text" class="form-control" id="employeerfid" name="employeerfid" placeholder="Employee RFID" required="" autofocus="" />
-                                    <label style="display:block;color:red;" id="lbl_employeerfid">&nbsp;</label>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">Birthday:</label>
-                                <div class="col-lg-8">
-                                    <input type="date" class="form-control" id="birthDate" name="birthDate" required="" autofocus="">
-                                    <label style="display:block;color:red;" id="lbl_birthDate">&nbsp;</label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">Phone Number:</label>
-                                <div class="col-lg-8">
-                                    <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number" onkeypress="return isNumber(event)" required="" autofocus="" />
-                                    <label style="display:block;color:red;" id="lbl_phone_number">&nbsp;</label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">Job title:</label>
-                                  <div class="col-lg-8">
-               						    <select id="job_title" name="job_title" class="form-control">
-               						    	<option selected>-- Please Select the Job Title --</option>
-                    					</select>
-               						<label style="display:block;color:red;" id="lbl_job_title">&nbsp;</label>
-                            	 </div>
-                           </div>
-                            
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">Department:</label>
-                                  <div class="col-lg-8">
-               						    <select id="department" name="department" class="form-control">
-               						    	<option selected>-- Please Select the Department --</option>
-                    					</select>
-               						<label style="display:block;color:red;" id="lbl_department">&nbsp;</label>
-                            	 </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">Role:</label>
-                                  <div class="col-lg-8">
-               						    <select id="role" name="role" class="form-control">
-               						    	<option selected>-- Please Select the Role --</option>
-                    					</select>
-               						<label style="display:block;color:red;" id="lbl_role">&nbsp;</label>
-                            	 </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-lg-3 control-label">Gender:</label>
-                                <div class="col-lg-8">
-                                    <select name="gender" id="gender" class="form-control">
-                                        <option selected>Male</option>
-                                        <option>Female</option>
-                                    </select>
-                                    <label style="display:block;color:green;" id="lbl_success">&nbsp;</label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
+                    	     <div class="form-group">
                                 <label class="col-md-3 control-label"></label>
                                 <div class="col-md-8">
-                                    <button class="btn btn-primary" type="button" onclick="validation()" id="submit">Submit</button>
-                                    <span></span>
-                                    <input type="reset" class="btn btn-default" value="Reset">
+                                    <button class="btn btn-primary" type="button" onclick="validation();" id="submit">Submit for Approval</button>
                                 </div>
                             </div>
-                  
-                    </div>
-                    	<div class="col-md-3">
-                        	<div class="text-center">-
-                           		<div id="img_div">
-                                	<img src="images/avatar.jpg" class="avatar img-circle" style="width:200px;height:200px" id="profile_pic" alt="avatar">
-                            	</div>
-                            	<input type='file' class="form-control" name="file" id="upload" onchange="readURL(this);" style="height: auto;" />
-                        	</div>
-                    	</div>
-                    		<input type="submit" id ="submit" value="Submit" style="display:none;"/>
                </div> 
           </form>
         </div>
@@ -147,244 +67,42 @@
 
  <script type="text/javascript"> 
  $(document).ready(function() {
-	 
-     $.ajax({
-         url: 'employee/allroles',
-         dataType: 'json',
-         type: 'GET',
-         success: function(data) {
-
-             loadRoles(data);
-         }
-     });
-
-     $.ajax({
-         url: 'employee/alljobtitles',
-         dataType: 'json',
-         type: 'GET',
-         success: function(data) {
-
-             loadTitles(data);
-         }
-     });
-     
-     $.ajax({
-         url: 'employee/alldepartments',
-         dataType: 'json',
-         type: 'GET',
-         success: function(data) {
-
-             loadDepartments(data);
-         }
-     });
-
- });
-
- function loadDepartments(departments){
-	 	for(i=0;i<departments.length;i++){
-	 		$('#department').append('<option>'+departments[i].department+'</option>');
-
-	 	}
-}
- function loadTitles(titles){
-	 	for(i=0;i<titles.length;i++){
-	 		$('#job_title').append('<option>'+titles[i].jobtitle+'</option>');
-
-	 	}
+	 console.log("mala");
+ });	
+ function validation() {
+	console.log("hereee");
+	save();
  }
- 
- function loadRoles(roles){
-	 
-	 	for(i=0;i<roles.length;i++){
-	 		$('#role').append('<option>'+roles[i].role+'</option>');
-
-	 	}
-	 
- }
- 
- function checkEmployeeId() {
-	    $.ajax({
-	        url: 'employee/checkEmployeeId',
-	        data: {
-	        	employeeId: $('#employeeId').val()
-	        },
-	        dataType: 'text',
-	        type: 'GET',
-	        success: function(data) {
-	            authenticateUser(data);
-
-	        },
-	    });
-	}
-
-	function authenticateUser(data) {
-	    if (data == "User Exist") {
-
-	        $("#lbl_employeeId").html("Employee Id Exists please recheck")
-	    } else {
-	        $("#lbl_employeeId").html("&nbsp;");
-	    }
-
-	}
-
 	function chooseFile() {
 	    $("#upload").click();
 	}
 
-	function readURL(input) {
-
-	    if (input.files && input.files[0]) {
-	        var reader = new FileReader();
-
-	        reader.onload = function(e) {
-	            $('#profile_pic')
-	                .attr('src', e.target.result)
-	                .width(250)
-	                .height(250);
-	        };
-
-	        reader.readAsDataURL(input.files[0]);
-	    }
-	    $("#close_btn").css("display", "block");
-	}
-
-	function removeImg() {
-	    $("#profile_pic").attr("src", "images/avatar.jpg");
-	    $("#close_btn").css("display", "none");
-
-	}
-
 	function save() {
+		return $.ajax({
+	        url: "salary/upload",
+	        type: "POST",
+	        data: new FormData($("#upload-file-form")[0]),
+	        enctype: 'multipart/form-data',
+	        processData: false,
+	        contentType: false,
+	        cache: false,
+	        success: function(data) {
+	        	clearValues(data);
+            },
+		   error: function(data) {
+	        	errorOcc(data);
+           }
+	    });
 
-
-	    if ((($("#lbl_firstname").html()) === "&nbsp;") && (($("#lbl_lastname").html()) === "&nbsp;") &&
-	        (($("#lbl_employeeId").html()) === "&nbsp;") && (($("#lbl_birthDate").html()) === "&nbsp;") &&
-	        (($("#lbl_phone_number").html()) === "&nbsp;") &&  (($("#lbl_department").html()) === "&nbsp;") &&
-	        (($("#lbl_role").html()) === "&nbsp;")) {
-	    	
-	    		  $.ajax({
-	    		    url: "employee/save/employeeDeatils",
-	    		    type: "POST",
-	    		    data: new FormData($("#upload-file-form")[0]),
-	    		    enctype: 'multipart/form-data',
-	    		    processData: false,
-	    		    contentType: false,
-	    		    cache: false,
-	    		    success: function () {
-	    		    }
-	    		  });
-	    		  
-	        accountCreated();
-	    }
 	}
-
-
-	function isNumber(evt) {
-	    evt = (evt) ? evt : window.event;
-	    var charCode = (evt.which) ? evt.which : evt.keyCode;
-	    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-	        return false;
-	    }
-	    return true;
+	function errorOcc(){
+		alert("Oops something went wrong");
 	}
-
-	function validation() {
-
-	    var regular_exp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-	    var email_address = $('#email_address').val();
-
-	    if ($("#firstname").val() == "") {
-	        $("#lbl_firstname").html("Please fill the Firstname");
-
-	    } else {
-	        $("#lbl_firstname").html("&nbsp;");
-
-	    }
-
-	    if ($("#lastname").val() == "") {
-	        $("#lbl_lastname").html("Please fill the Lastname");
-
-	    } else {
-	        $("#lbl_lastname").html("&nbsp;");
-
-	    }
-
-	    if ($("#emplyeeId").val() == "") {
-	        $("#lbl_employeeId").html("Please fill the Username");
-
-	    } else if (!($("#username").val() == "")) {
-
-
-	    } else {
-
-	        $("#lbl_employeeId").html("&nbsp;");
-	    }
-	    
-	    if ($("#birthDate").val() == "") {
-	        $("#lbl_birthDate").html("Please fill the Date of Birth");
-
-	    } else {
-	        $("#lbl_birthDate").html("&nbsp;");
-
-	    }
-	  
-	    if ($("#phone_number").val() == "") {
-	        $("#lbl_phone_number").html("Please fill the Phone Number");
-
-	    } else {
-	        $("#lbl_phone_number").html("&nbsp;");
-
-	    }
-	    if ($("#job_title").val() == "-- Please Select the Job Title --") {
-	        $("#lbl_job_title").html("Please fill the Job Title");
-
-	    } else {
-	        $("#lbl_job_title").html("&nbsp;");
-
-	    }
-	    
-	    if ($("#department").val() == "-- Please Select the department --") {
-	        $("#lbl_department").html("Please fill the department");
-
-	    } else {
-	        $("#lbl_department").html("&nbsp;");
-
-	    }
-	    
-	    if ($("#role").val() == "-- Please Select the Role --") {
-	        $("#lbl_role").html("Please fill the Role");
-
-	    } else {
-	        $("#lbl_role").html("&nbsp;");
-
-	    }
-
-	    save();
-	}
-
-	function accountCreated() {
-	    $("#firstname").val('');
-	    $("#lastname").val('');
-	    $("#employeeId").val('');
-	    $("#birthDate").val('');
-	    $("#phone_number").val('');
+	function clearValues() {
+		alert("File Uploaded Sucessfully for Approval");
+		$("#description").val('');
+	    $("#filename").val('');
 	    $("#upload").val('');
-	    $("#job_title").val('');
-	    $("#department").val('');
-	    $("#role").val('');
-	    $("#employeerfid").val('');
-	    $("#profile_pic").attr("src", "images/avatar.jpg");
 
-	    $("#lbl_success").html("You have successfully created an account");
-	    HideLabel();
-
-	}
-
-	function HideLabel() {
-	    var seconds = 5;
-	    setTimeout(function() {
-	        $("#lbl_success").html("&nbsp;");
-	    }, seconds * 1000);
-	};
-	
+	}	
   </script>

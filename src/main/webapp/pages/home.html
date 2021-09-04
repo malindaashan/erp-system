@@ -2,37 +2,33 @@
     <nav class="navbar navbar-inverse" id="navigation_bar">
         <div id="main-nav" class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Rate Me</a>
+                <a class="navbar-brand" href="#">MAS ERP System</a>
             </div>
             <ul class="nav navbar-nav">
                 <li class="active"><a id="home" href="#">Home</a></li>
 
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Employee Management <span class="caret"></span></a>
+                <li class="dropdown" id="hr_dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> HR <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#" id="create_employee_profile">Create Employee Profile</a></li>
-                        <li><a href="#" id="assign_rateme_profile">Assign RateMe Profile</a></li>
-                         <li><a href="#" id="employee_list">Employee List</a></li>
+                        <li><a href="#" id="create_employee_profile">Upload Salary Sheet</a></li>
+                        <li><a href="#" id="assign_rateme_profile">Check Status</a></li>
                     </ul>
                 </li>
                 
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Product Management <span class="caret"></span></a>
+                <li class="dropdown" id="admin_dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Administrative Task <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-						<li><a id="create_product" href="#">Create Product</a></li>
-                        <li><a id="product_type_line_config" href="#">Product Step Configuration</a></li><!-- product_type_line_config -->
-                        <li><a id="lines_product_management" href="#">Lines Product Management</a></li>
-                         <li><a id="search_product_details" href="#">Search Product Details</a></li>
+						<li><a id="create_product" href="#">Approve Salary Sheets</a></li>
                     </ul>
                 </li>
                 
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Device Management <span class="caret"></span></a>
+              <!--   <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Device Management <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a id="register_new_device" href="#">Register New Device</a></li>
-                        <!-- <li><a id="assign_device_employee" href="#">Assign Device - Employee </a></li> -->
+                        <li><a id="assign_device_employee" href="#">Assign Device - Employee </a></li>
                     </ul>
                 </li>
 
                 <li><a id="about" href="#">About</a></li>
-                <li><a id="contact_us" href="#">Contact Us</a></li>
+                <li><a id="contact_us" href="#">Contact Us</a></li> -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -114,6 +110,7 @@
 /*             $("#home").on("click", function(e) {
                 loadPage('home', e);
             }); */
+            
             $("#home").on("click", function(e) {
                 loadPage('main_page', e);
             });
@@ -166,6 +163,15 @@
                 $("#profile_pic").attr("src", "images/test.jpg");
             }
             setUsername();
+            
+            console.log("asdasdasdas")
+            if($("#privilege_id").val() ==1){
+            	$('#admin_dropdown').show();
+            	$('#hr_dropdown').hide();
+            } else if($("#privilege_id").val() ==2){
+            	$('#admin_dropdown').hide();
+            	$('#hr_dropdown').show();
+            }
         });
         
         function setUsername() {
@@ -179,11 +185,12 @@
                 success: function(data) {
                 	$("#login_userId").val(data[0].id);
                 	$("#employee_detail_id").val(data[0].employeeDetailId);
-                	getEmployeeById(data[0].employeeDetailId);
+                	$("#privilege_id").val(data[0].privilege_id);
+                	//getEmployeeById(data[0].employeeDetailId);
                 }
             });
         }
-
+        
         function getEmployeeById(employeeId) {
             $.ajax({
                 url: 'employee/getEmployeeById',

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.erp.erpsystem.pojo.UserLogin;
 import com.erp.erpsystem.user.impl.UserLoginImpl;
 
 
@@ -43,9 +44,9 @@ public class UserController {
 //    	 return;
 // 	}
 //    
-//    @RequestMapping(value = "/getUserByUsername", method = RequestMethod.GET)
-//  	public List<UserLogin> getUserByUsername(HttpServletRequest request){
-//     	return repository.getUserByUsername(request);
-//  	}
+    @RequestMapping(value = "/getUserByUsername", method = RequestMethod.GET)
+  	public List<UserLogin> getUserByUsername(HttpServletRequest request){
+     	return repository.getUserByUsername(request);
+  	}
     
 }
