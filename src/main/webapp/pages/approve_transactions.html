@@ -7,10 +7,32 @@
 
 </style>
 
-<div id="create_product_bk">
-  <h3 class="topic">Product Basic Information</h3>
+<div id="approve_transactions">
+  <h3 class="topic">Approve Transactions</h3>
    <div class="detailWrapper">
-    <form class="form-horizontal" id="basic_infoform" role="form">
+   <table id="datatable" class="display" width="100%"></table>
+   <input type="hidden" id="sel_rec" name="sel_rec" value=""/>
+   
+         <!-- start of modal -->
+      <div class="modal fade" style="" id="assignDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog" style="left:0%">
+            <div class="modal-content" style="position: absolute;margin-left: -320px; padding: 10px">
+               <div class="modal-header" style="padding:10px; width: 1200px">
+                  <button type="button" style="position: relative;left: 115px;" class="close" data-dismiss="modal" aria-label="Close">
+                  <span style="position: relative;left: -110px;" aria-hidden="true">&times;</span>
+                  </button>
+                  <h1>Confirmation</h1>
+               </div>
+               <div class="modal-body" style="padding:1px">
+                  <div id="model-details"><h3>Are you sure you want approve the file?</h3></div>
+                  <button class="btn btn-primary" type="button" onclick="confirm();" id="yes">Yes</button>
+                  <button class="btn btn-primary" type="button" data-dismiss="modal" id="no">NO</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- end of modal -->
+  <!--   <form class="form-horizontal" id="basic_infoform" role="form">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label>Product Type: </label>
@@ -55,11 +77,89 @@
         <div class="clearfix"></div>
         <button id="submit_basicinfo" onclick="saveBasicInfo()" class="btn btn-success">Submit</button>
         <input type="hidden" id="product_type_id" name="product_type_id" value="0">
-    </form>
+    </form> -->
    </div>
  </div> 
 <script>
-    var prodArr = [];
+ var dataSet = [];
+$(document).ready(function() {
+	  $('#datatable').DataTable({
+	        data: dataSet,
+	        columns: [{
+	     	   	   title: "#"
+	        	   },
+	            {
+	                title: "File Name"
+	            },
+	            {
+	                title: "File Description"
+	            },
+	            {
+	                title: "Uploaded Date"
+	            },
+	            {
+	                title: "File Status"
+	            },
+	            {
+	                title: "View"
+	            },
+	            {
+	                title: "Change Status"
+	            }
+	        ]
+	    });
+    $.ajax({
+        url: 'salary/getFiles?status=P',
+        dataType: 'json',
+        type: 'GET',
+        success: function(data) {
+            //alert("Successfully loded")
+            setFileData(data);
+        }
+    });
+    
+/*     var request = new XMLHttpRequest();
+    request.open("GET", "F:\\erpuploads\\444444.xlsx");
+    request.responseType = "arraybuffer";
+    request.onload = function () {
+       // this.response should be `ArrayBuffer` of `.xlsx` file
+       var file = new File(this.response, "444444.xlsx");
+       // do stuff with `file`
+    };
+    request.send(); */
+});
+
+function confirm(){
+	$.ajax({
+	    url: 'salary/approve?id='+$("#sel_rec").val(),
+	    dataType: 'json',
+	    type: 'GET',
+	    success: function(data) {
+	        //alert("Successfully loded")
+	        alert("Confim");
+	    }
+	});
+	location.reload();
+}
+
+function loadtoModel(id){
+	alert(id);
+	$("#sel_rec").val(id);
+}
+function setFileData(data) {
+    dataSet = [];
+    for (var i = 0; i < data.length; i++) {
+        if(data[i].status == "P"){
+    		dataSet.push([data[i].id, data[i].name,data[i].des,data[i].uploadedDate,data[i].status,"<a onclick=\"loadExcel(" + data[i].id + ")\">View</a>", "<a id=\"" + data[i].id + "\"onclick=\"loadtoModel(" + data[i].id + ")\" data-toggle=\"modal\" data-target=\"#assignDetails\">Approve</a>"]);
+        } else {
+        	dataSet.push([data[i].id, data[i].name,data[i].des,data[i].uploadedDate,data[i].status,"No Preview","Approved"]);
+        }
+    }
+    var datatable = $("#datatable").DataTable();
+    datatable.clear().rows.add(dataSet).draw();
+}
+
+   /*  var prodArr = [];
     var prodNameArr = [];
     var dataSet = [];
 
@@ -111,6 +211,6 @@
         });
         alert("Product Sucessfully Saved");
 
-    }
+    } */
 
 </script>

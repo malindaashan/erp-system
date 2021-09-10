@@ -16,11 +16,11 @@
                 
                 <li class="dropdown" id="admin_dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Administrative Task <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-						<li><a id="create_product" href="#">Approve Salary Sheets</a></li>
+						<li><a id="approve_transactions" href="#">Approve Transactions</a></li>
                     </ul>
                 </li>
-                
-              <!--   <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Device Management <span class="caret"></span></a>
+<!--                 
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> Device Management <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a id="register_new_device" href="#">Register New Device</a></li>
                         <li><a id="assign_device_employee" href="#">Assign Device - Employee </a></li>
@@ -114,6 +114,10 @@
             $("#home").on("click", function(e) {
                 loadPage('main_page', e);
             });
+            $("#approve_transactions").on("click", function(e) {
+                $(this).addClass('active');
+                loadPage('approve_transactions', e);
+            });
             $("#create_employee_profile").on("click", function(e) {
                 loadPage('create_employee_profile', e);
             });
@@ -166,10 +170,10 @@
             
             console.log("asdasdasdas")
             if($("#privilege_id").val() ==1){
-            	$('#admin_dropdown').show();
+            	//$('#admin_dropdown').show();
             	$('#hr_dropdown').hide();
             } else if($("#privilege_id").val() ==2){
-            	$('#admin_dropdown').hide();
+            	//$('#admin_dropdown').hide();
             	$('#hr_dropdown').show();
             }
         });
