@@ -1,6 +1,5 @@
 package com.erp.erpsystem.user.impl;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,24 +7,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
-import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.EncodedKeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 import java.util.List;
 
 import javax.crypto.Cipher;
-import javax.crypto.CipherOutputStream;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
@@ -36,12 +30,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.didisoft.pgp.PGPException;
+import com.didisoft.pgp.PGPLib;
 import com.erp.erpsystem.pojo.FileUpload;
 import com.erp.erpsystem.user.dao.FileUploadRepository;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
+
+import org.apache.camel.CamelContext;
+import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.impl.DefaultCamelContext;
+import org.bouncycastle.openpgp.PGPPublicKey;
 
 @Service
 public class SalaryImpl {
@@ -102,9 +103,10 @@ public class SalaryImpl {
 		  ChannelSftp channelSftp =null;
 		  String SFTPWORKINGDIR= "/mas";
 		  String transferingFilePath = filePath.replace("//", "\\")+fileUpload.getName()+".xlsx";
-		  System.out.println(transferingFilePath); 
+		  System.out.println(transferingFilePath);
+		  encrypt2(transferingFilePath);
 		try{ 
-			encryptFile(filePath.replace("//", "\\"),fileUpload.getName()+".xlsx");	  
+		 // InputStream in = encryptFile(filePath.replace("//", "\\"),fileUpload.getName()+".xlsx");	  
 		  JSch jsch = new JSch();
 		  session = jsch.getSession(SFTPUSER, SFTPHOST, SFTPPORT);
 		  session.setPassword(SFTPPASS);
@@ -130,6 +132,57 @@ public class SalaryImpl {
 		
 		}
 	}
+	public void encrypt(String input){
+		try{
+			
+			CamelContext camelContext=new DefaultCamelContext();
+			camelContext.addRoutes(new RouteBuilder(){
+				public void configure() throws Exception
+				{
+					final String publicKeyFileName="file:F:\\Keys\\Test_0x201766D3_public.asc";
+					final String keyUserid="test";
+					from("file:‪F:\\erpuploads\\444444.xlsx?noop=true;delete=true")
+					.marshal().pgp(publicKeyFileName, keyUserid)
+					.to("file:F:\\En\\OUT");
+				}
+			});
+			camelContext.start();
+			Thread.sleep(5000);
+			camelContext.stop();
+		} catch(Exception e ){
+			e.printStackTrace();
+		}
+	}
+	
+	public void encrypt2(String input){
+		try{
+			
+			PGPLib pgp = new PGPLib();
+			 // is output ASCII or binary
+			  boolean asciiArmor = true; 
+			 
+			  // should integrity check information be added
+			  // set to true for compatibility with GnuPG 2.2.8+
+			  boolean withIntegrityCheck = false; 
+			 
+			  // obtain the streams
+			  InputStream inStream = new FileInputStream("F:\\erpuploads\\ttt");
+			  InputStream keyStream = new FileInputStream("F:\\Keys\\Test_0x201766D3_public.asc");
+			  OutputStream outStream = new FileOutputStream("F:\\En\\OUT.pgp");
+			 
+			  // Here "INPUT.txt" is just a string to be written in the
+			  // OpenPGP packet which contains:
+			  // file name string, timestamp, and the actual data bytes
+			  pgp.encryptStream(inStream, "ttt",
+			                    keyStream,
+			                    outStream,
+			                    asciiArmor,
+			                    withIntegrityCheck);
+		} catch(Exception e ){
+			e.printStackTrace();
+		}
+	}
+
 	
 	public static PrivateKey getPrivate()throws Exception {
 
@@ -153,7 +206,20 @@ public class SalaryImpl {
 	private InputStream encryptFile(String path, String name) throws InvalidKeyException, Exception {
 		InputStream targetStream = null;
 		try {
+			KeyGenerator generator = KeyGenerator.getInstance("AES");
+			generator.init(128); // The AES key size in number of bits
+			SecretKey secKey = generator.generateKey();
 			byte[] fileBytes = Files.readAllBytes(Paths.get(path, name));
+			
+			Cipher aesCipher = Cipher.getInstance("AES");
+			aesCipher.init(Cipher.ENCRYPT_MODE, secKey);
+			byte[] byteCipherText = aesCipher.doFinal(fileBytes);
+			
+			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			cipher.init(Cipher.PUBLIC_KEY, getPublic());
+			byte[] encryptedKey = cipher.doFinal(secKey.getEncoded()/*Seceret Key From Step 1*/);
+
+			
 			Cipher encryptCipher = Cipher.getInstance("RSA");
 			encryptCipher.init(Cipher.ENCRYPT_MODE, getPublic());
 			byte[] encryptedFileBytes = encryptCipher.doFinal(fileBytes);
@@ -179,7 +245,7 @@ public class SalaryImpl {
 			//System.out.println("D msg"+ decryptedMessage);
 			
 	        ***/
-		} catch (NoSuchAlgorithmException | FileNotFoundException| NoSuchPaddingException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -53,6 +53,20 @@
 			<artifactId>nekohtml</artifactId>
 			<version>1.9.22</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.camel/camel-core -->
+		<dependency>
+		    <groupId>org.apache.camel</groupId>
+		    <artifactId>camel-core</artifactId>
+		    <version>3.11.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.camel/camel-crypto -->
+		<dependency>
+		    <groupId>org.apache.camel</groupId>
+		    <artifactId>camel-crypto</artifactId>
+		    <version>3.11.1</version>
+		</dependency>
+				
+				
 	 <dependency>
 	    <groupId>mysql</groupId> 
 	    <artifactId>mysql-connector-java</artifactId>
