@@ -1,0 +1,65 @@
+<style type="text/css">
+
+    label {
+
+        margin-bottom: 10px;
+    }
+    
+    .btn-success {
+    	margin-left: 15px;
+	}
+</style>
+
+<form>
+    <h3 class="topic">File Status</h3>
+    <div class="detailWrapper">
+    	<table id="datatable" class="display" width="100%"></table>
+	</div>
+</form>
+
+<script>
+var dataSet = [];
+$(document).ready(function() {
+	  $('#datatable').DataTable({
+	        data: dataSet,
+	        columns: [{
+	     	   	   title: "#"
+	        	   },
+	            {
+	                title: "File Name"
+	            },
+	            {
+	                title: "File Description"
+	            },
+	            {
+	                title: "Uploaded Date"
+	            },
+	            {
+	                title: "File Status"
+	            },
+	            {
+	                title: "Approved Date"
+	            }
+	        ]
+	    });
+    $.ajax({
+        url: 'salary/getFiles?status=A',
+        dataType: 'json',
+        type: 'GET',
+        success: function(data) {
+            //alert("Successfully loded")
+            setFileData(data);
+        }
+    });
+});
+
+function setFileData(data) {
+    dataSet = [];
+    for (var i = 0; i < data.length; i++) {
+       
+       dataSet.push([data[i].id, data[i].name,data[i].des,data[i].uploadedDate,data[i].status,data[i].approvedDate]);
+    }
+    var datatable = $("#datatable").DataTable();
+    datatable.clear().rows.add(dataSet).draw();
+}
+</script>

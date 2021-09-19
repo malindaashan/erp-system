@@ -16,7 +16,7 @@ public interface FileUploadRepository extends JpaRepository<FileUpload, Long>{
 	
 	@Transactional
 	@Modifying
-	@Query("update FileUpload p set p.status=?2 where p.id =?1")
-	void setById(Long id,String status);
+	@Query("update FileUpload p set p.status=?2, p.approvedDate=?3 where p.id =?1")
+	void setById(Long id,String status, String approvedDate);
 
 }

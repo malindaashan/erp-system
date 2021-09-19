@@ -9,8 +9,8 @@
 
                 <li class="dropdown" id="hr_dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> HR <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#" id="create_employee_profile">Upload Salary Sheet</a></li>
-                        <li><a href="#" id="assign_rateme_profile">Check Status</a></li>
+                        <li><a href="#" id="upload_salary_sheet">Upload Salary Sheet</a></li>
+                        <li><a href="#" id="check_status">Check Status</a></li>
                     </ul>
                 </li>
                 
@@ -118,64 +118,17 @@
                 $(this).addClass('active');
                 loadPage('approve_transactions', e);
             });
-            $("#create_employee_profile").on("click", function(e) {
-                loadPage('create_employee_profile', e);
+            $("#upload_salary_sheet").on("click", function(e) {
+                loadPage('upload_salary_sheet', e);
             });
-            $("#assign_rateme_profile").on("click", function(e) {
-                loadPage('assign_rateme_profile', e);
+            $("#check_status").on("click", function(e) {
+                loadPage('check_status', e);
             });
-            $("#employee_list").on("click", function(e) {
-                loadPage('employee_list', e);
-            });
-            $("#product_type_line_config").on("click", function(e) {
-                $(this).addClass('active');
-                loadPage('product_type_line_config', e);
-            });
-            $("#create_product").on("click", function(e) {
-                $(this).addClass('active');
-                loadPage('create_product', e);
-            });
-            $("#lines_product_management").on("click", function(e) {
-                $(this).addClass('active');
-                loadPage('lines_product_management', e);
-            });
-            $("#search_product_details").on("click", function(e) {
-                $(this).addClass('active');
-                loadPage('search_product_details', e);
-            });
-            
-            $("#register_new_device").on("click", function(e) {
-                $(this).addClass('active');
-                loadPage('register_new_device', e);
-            });
-      /*       $("#assign_device_employee").on("click", function(e) {
-                $(this).addClass('active');
-                loadPage('assign_device_employee', e);
-            }); */
-
-            $("#about").on("click", function(e) {
-                loadPage('about', e);
-            });
-            $("#contact_us").on("click", function(e) {
-                loadPage('contact_us', e);
-            });
-            $("#view_profile").on("click", function(e) {
-                loadPage('view_profile', e);
-            }); 
             
             function setImage(data) {
                 $("#profile_pic").attr("src", "images/test.jpg");
             }
             setUsername();
-            
-            console.log("asdasdasdas")
-            if($("#privilege_id").val() ==1){
-            	//$('#admin_dropdown').show();
-            	$('#hr_dropdown').hide();
-            } else if($("#privilege_id").val() ==2){
-            	//$('#admin_dropdown').hide();
-            	$('#hr_dropdown').show();
-            }
         });
         
         function setUsername() {
@@ -190,6 +143,18 @@
                 	$("#login_userId").val(data[0].id);
                 	$("#employee_detail_id").val(data[0].employeeDetailId);
                 	$("#privilege_id").val(data[0].privilege_id);
+                    
+                	console.log("setUsername")
+                    
+                    if($("#privilege_id").val() ==1){
+                    	//$('#admin_dropdown').show();
+                    	$('#hr_dropdown').hide();
+                    	$('#admin_dropdown').show();
+                    } else if($("#privilege_id").val() ==2){
+                    	//$('#admin_dropdown').hide();
+                    	$('#hr_dropdown').show();
+                    	$('#admin_dropdown').hide();
+                    }
                 	//getEmployeeById(data[0].employeeDetailId);
                 }
             });
